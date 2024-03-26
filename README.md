@@ -5,6 +5,7 @@
 
 [![R build
 status](https://github.com/rundel/ghclass/workflows/R-CMD-check/badge.svg)](https://github.com/rundel/ghclass/actions?query=workflow%3AR-CMD-check)
+[![R-CMD-check](https://github.com/rundel/ghclass/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rundel/ghclass/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Tools for managing GitHub class organization accounts
@@ -14,6 +15,12 @@ their courses on GitHub. It has a wide range of functionality for
 managing organizations, teams, repositories, and users on GitHub and
 helps automate most of the tedious and repetitive tasks around creating
 and distributing assignments.
+
+Install ghclass from CRAN:
+
+``` r
+install.packages("ghclass")
+```
 
 Install the development version package from GitHub:
 
