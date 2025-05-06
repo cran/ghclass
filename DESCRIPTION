@@ -1,6 +1,6 @@
 Package: ghclass
 Title: Tools for Managing Classes on GitHub
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     c(person(given = "Colin",
              family = "Rundel",
@@ -28,12 +28,12 @@ Imports: base64enc, fs, gh, glue, httr, lubridate, purrr, rlang,
 Suggests: here, knitr, rmarkdown, sodium, styler, usethis, gert, readr,
         gitcreds
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-03-26 17:48:38 UTC; rundel
+Packaged: 2025-05-06 15:59:17 UTC; rundel
 Author: Colin Rundel [aut, cre],
   Mine Cetinkaya-Rundel [aut],
   Therese Anders [ctb]
 Maintainer: Colin Rundel <rundel@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-03-26 18:30:06 UTC
+Date/Publication: 2025-05-06 16:20:02 UTC
