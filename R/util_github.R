@@ -1,18 +1,31 @@
-github_api_download_file = function(url, dest) {
+github_api_download_file = function(url, dest, max_tries = 3) {
   arg_is_chr_scalar(url, dest)
 
-  req = httr::GET(
-    url,
-    httr::add_headers(
-      Authorization = paste("bearer", github_get_token())
+  for (i in seq_len(max_tries)) {
+    req = httr::GET(
+      url,
+      httr::add_headers(
+        Authorization = paste("bearer", github_get_token())
+      )
     )
-  )
+
+    if (httr::status_code(req) != 202)
+      break
+
+    Sys.sleep(2)
+  }
 
   res = httr::content(req, as = "raw")
   code = httr::status_code(req)
 
+  if (code == 202)
+    cli_stop("GitHub API Error (202) - the requested archive is still being generated, please retry shortly.")
+
   if (code >= 300) {
-    cli_stop("GitHub API Error ({code}) - {res[['message']]}")
+    msg = httr::content(req, as = "parsed")[["message"]]
+    if (is.null(msg))
+      msg = "request failed"
+    cli_stop("GitHub API Error ({code}) - {msg}")
   }
 
   writeBin(res, dest)
@@ -191,7 +204,8 @@ endpoint_verb = function(x) {
 #' @export
 ghclass_api_v3_req = function(
     endpoint, ..., .send_headers = character(),
-    version = "2022-11-28", limit = github_get_api_limit()
+    version = "2022-11-28", limit = github_get_api_limit(),
+    max_wait = github_get_max_wait(), max_rate = github_get_max_rate()
 ) {
   arg_is_chr_scalar(version)
   arg_is_chr(.send_headers)
@@ -206,18 +220,20 @@ ghclass_api_v3_req = function(
     limit = NULL
   }
 
-  res = suppressMessages(
-    gh::gh(
-      endpoint = endpoint,
-      ...,
-      .limit = limit,
-      .token = github_get_token(),
-      .send_headers = .send_headers
-      # .progress = FALSE # TODO - giving an error for some reason
-    )
+  gh_args = list(
+    endpoint = endpoint,
+    ...,
+    .limit = limit,
+    .token = github_get_token(),
+    .send_headers = .send_headers
+    # .progress = FALSE # TODO - giving an error for some reason
   )
+  if (!is.null(max_wait)) gh_args[[".max_wait"]] = max_wait
+  if (!is.null(max_rate)) gh_args[[".max_rate"]] = max_rate
 
-  if (length(res) == github_get_api_limit()) {
+  res = suppressMessages(do.call(gh::gh, gh_args))
+
+  if (method == "GET" && is.null(names(res)) && length(res) == github_get_api_limit()) {
     cli::cli_warn(
       c("The number of results is equal to the limit set by {.fn github_set_api_limit},",
         "consider increasing this limit and rerunning the previous function.")
@@ -225,4 +241,22 @@ ghclass_api_v3_req = function(
   }
 
   res
+}
+
+
+# GitHub's search APIs (REST and GraphQL) return at most 1000 results per query.
+# Warn when a search matches more than that, since the results are then a
+# truncated subset of the matches.
+warn_if_search_capped = function(total_count) {
+  if (length(total_count) != 1 || is.na(total_count) || total_count <= 1000)
+    return(invisible())
+
+  cli::cli_warn(
+    c(
+      "This search matched {total_count} repositories but GitHub returns at most 1000 results.",
+      i = "The results are truncated - narrow the search to capture the remaining repositories."
+    )
+  )
+
+  invisible()
 }

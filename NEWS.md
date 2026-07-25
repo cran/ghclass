@@ -1,4 +1,30 @@
-# ghclass (development version)
+# ghclass 0.4.1
+
+* Added `team_roster()` to assign roster members to teams of a given size, optionally within groups.
+
+* Added experimental `local_repo_anonymize()` to scrub roster-derived student PII from the files of a local repo or grading project and delete (or keep) their git history.
+
+* Fixed bugs in `repo_prs()`, `action_runs()`, and `action_runtime()` that produced wrong or missing values.
+
+* Fixed several bugs in the `local_repo_*()` functions.
+
+* GraphQL-based functions now escape special characters in names and filters and report API errors instead of failing silently.
+
+* Improved argument validation and error reporting.
+
+* `team_invite()` now de-duplicates repeated user / team pairs before inviting.
+
+* Various fixes to the `action_*()` functions and file downloads.
+
+* `action_artifact_download()` now treats unzip warnings as failures and removes partially extracted files (and the downloaded zip, unless `keep_zip`).
+
+* `org_repo_search()` and `org_repo_stats()` now warn when a search exceeds GitHub's 1000-result limit.
+
+* `team_members()`, `team_pending()`, and `team_repos()` gain a `slug` column; the `team` column now echoes the supplied team values.
+
+* Added `github_set_max_wait()` and `github_set_max_rate()` (and getters) to control how long requests wait when rate limited and to throttle the request rate.
+
+* GraphQL (v4) requests now retry with backoff when rate limited instead of failing immediately.
 
 # ghclass 0.4.0
 

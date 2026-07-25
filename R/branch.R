@@ -10,15 +10,11 @@
 #'
 #' * `branch_remove()` - previous name of `branch_delete`, deprecated.
 #'
-# #' * `branch_protect()` / `branch_unprotect()` either add or remove protections from the specified branch. See
-# #' <https://help.github.com/en/articles/about-protected-branches> for more details
-# ?#' on what this changes.
-#'
 #' @param repo GitHub repository address in `owner/repo` format.
 #' @param branch Repository branch to use.
 #' @param new_branch Name of branch to create.
 #'
-#' @return `branch_create()`and `branch_remove()` invisibly return a list containing
+#' @return `branch_create()` and `branch_delete()` invisibly return a list containing
 #' the results of the relevant GitHub API call.
 #'
 #' @seealso [repo_branches]

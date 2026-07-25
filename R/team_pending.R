@@ -14,32 +14,34 @@ team_pending = function(org, team = org_teams(org), team_type = c("name", "slug"
   arg_is_chr(team)
   team_type = match.arg(team_type)
 
-  if (team_type == "name")
-    team = team_slug_lookup(org, team)
+  slug = if (team_type == "name") team_slug_lookup(org, team) else team
 
-  check_team_slug(team)
+  check_team_slug(slug)
 
-  purrr::map_dfr(
-    team,
-    function(team) {
-      res = purrr::safely(github_api_team_pending)(org, team)
-
-      status_msg(
-        res,
-        fail = "Failed to retrieve team members for {.val {team}}."
-      )
-
-      if (failed(res) | empty_result(res)) {
-        tibble::tibble(
-          team = character(),
-          user = character()
-        )
+  purrr::map2_dfr(
+    team, slug,
+    function(team, slug) {
+      if (is.na(slug)) {
+        res = NULL
       } else {
-        tibble::tibble(
-          team = team,
-          user = purrr::map_chr(result(res), "login")
+        res = purrr::safely(github_api_team_pending)(org, slug)
+
+        status_msg(
+          res,
+          fail = "Failed to retrieve pending members for {.val {team}}."
         )
       }
+
+      pending = if (failed(res) | empty_result(res))
+        character()
+      else
+        purrr::map_chr(result(res), "login")
+
+      tibble::tibble(
+        team = team,
+        slug = slug,
+        user = pending
+      )
     }
   )
 }

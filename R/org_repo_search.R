@@ -1,6 +1,6 @@
 github_api_repo_search = function(q, sort = NULL, order = c("desc", "asc")) {
   if (!is.null(sort))
-    stopifnot(sort %in% "stars", "forks", "help-wanted-issues", "updated")
+    stopifnot(sort %in% c("stars", "forks", "help-wanted-issues", "updated"))
 
   order = match.arg(order)
 
@@ -38,6 +38,8 @@ org_repo_search = function(org, name, extra = "", full_repo = TRUE) {
 
   if (failed(res) | empty_result(res))
     return(character())
+
+  warn_if_search_capped(result(res)[["total_count"]])
 
   if (full_repo) {
     purrr::map_chr(result(res)[["items"]], "full_name")

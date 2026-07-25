@@ -18,7 +18,7 @@
 #' @param suffix Character. Shared suffix.
 #' @param privacy Character. Level of privacy for team, "closed" (visible to all
 #' members of the organization) or "secret" (only visible to organization owners
-#' and members of a team), default is "closed"
+#' and members of a team), default is "secret"
 #' @param prompt Logical. Should the user be prompted before deleting team. Default `true`.
 #' @param new_team Character. New team name.
 #'
@@ -71,6 +71,8 @@ NULL
 #' @param team_type Character. Either "slug" if the team names are slugs or "name" if full team names are provided.
 #'
 #' @return `team_members()`, `team_pending()`, and `team_repos()` all return a tibble.
+#' The `team` column echoes the supplied `team` values (names or slugs, per `team_type`)
+#' and a `slug` column gives the corresponding team slug used for the API calls.
 #'
 #' `team_invite()` and `team_remove()` invisibly return a list containing the results
 #' of the relevant GitHub API calls.

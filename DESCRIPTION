@@ -1,6 +1,6 @@
 Package: ghclass
 Title: Tools for Managing Classes on GitHub
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: 
     c(person(given = "Colin",
              family = "Rundel",
@@ -20,20 +20,23 @@ Description: Interface for the GitHub API that enables efficient
     and helps automate most of the tedious and repetitive tasks 
     around creating and distributing assignments.
 License: GPL-3
-URL: https://github.com/rundel/ghclass
+URL: https://github.com/rundel/ghclass,
+        https://rundel.github.io/ghclass/
 BugReports: https://github.com/rundel/ghclass/issues
 Depends: R (>= 3.4.0)
-Imports: base64enc, fs, gh, glue, httr, lubridate, purrr, rlang,
-        tibble, whisker, withr, dplyr, cli (>= 3.0.0), lifecycle
-Suggests: here, knitr, rmarkdown, sodium, styler, usethis, gert, readr,
-        gitcreds
+Imports: base64enc, fs, gh (>= 1.4.0), glue, httr, lubridate, purrr,
+        rlang, stringr, tibble, whisker, withr, dplyr, cli (>= 3.0.0),
+        lifecycle, readr, tidyselect
+Suggests: here, knitr, rmarkdown, sodium, styler, testthat (>= 3.0.0),
+        usethis, gert, gitcreds
 Encoding: UTF-8
 Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2026-05-08 01:00:45 UTC; rundel
+Packaged: 2026-07-25 23:08:29 UTC; rundel
 Author: Colin Rundel [aut, cre],
   Mine Cetinkaya-Rundel [aut],
   Therese Anders [ctb]
 Maintainer: Colin Rundel <rundel@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-05-08 02:11:15 UTC
+Date/Publication: 2026-07-25 23:20:02 UTC
